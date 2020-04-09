@@ -48,7 +48,7 @@ const Header = (props) => {
         expand="md"
       >
         <NavbarBrand className="port-navbar-brand" href="/">
-          Salih Sert
+          Salih
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
