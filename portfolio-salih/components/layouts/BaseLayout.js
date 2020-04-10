@@ -1,10 +1,11 @@
 import React from "react";
-import Header from './../shared/Header'
+import Header from "./../shared/Header";
 
-const BaseLayout = ({className, children}) => {
+const BaseLayout = ({ className, children, user, isAuthenticated }) => {
+ // console.log("baselayout", isAuthenticated);
   return (
     <div className="layout-container">
-      <Header />
+      <Header user={user} isAuthenticated={isAuthenticated} />
       <main className={`cover ${className}`}>
         <div className="wrapper">{children}</div>
       </main>

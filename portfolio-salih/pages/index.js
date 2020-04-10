@@ -3,11 +3,11 @@ import Typed from "react-typed";
 import { Row, Col, Container } from "reactstrap";
 import BaseLayout from "./../components/layouts/BaseLayout";
 
-const Index = () => {
+const Index = ({user, isAuthenticated}) => {
   const roleTyped = ["Web Developer", "React.js", "Next.js", "Tech Lover"];
 
   return (
-    <BaseLayout className="cover">
+    <BaseLayout isAuthenticated={isAuthenticated} className="cover">
       <div className="main-section">
         <div className="background-image">
           <img src="/static/images/background-index.png" />

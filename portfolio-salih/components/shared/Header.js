@@ -9,6 +9,8 @@ import {
   NavItem,
 } from "reactstrap";
 
+import auth0 from "../../services/auth0";
+
 const BsNavlink = ({ route, title }) => {
   return (
     <NavItem className="port-navbar-item">
@@ -22,21 +24,33 @@ const BsNavlink = ({ route, title }) => {
 const Login = () => {
   return (
     <NavItem className="port-navbar-item">
-      <span className="nav-link port-navbar-link clickable">Login</span>;
+      <span
+        onClick={auth0.login}
+        className="nav-link port-navbar-link clickable"
+      >
+        Login
+      </span>
+      ;
     </NavItem>
   );
 };
 const Logout = () => {
   return (
     <NavItem className="port-navbar-item">
-      <span className="nav-link port-navbar-link clickable">Logout</span>;
+      <span
+        onClick={auth0.logout}
+        className="nav-link port-navbar-link clickable"
+      >
+        Logout
+      </span>
+      ;
     </NavItem>
   );
 };
 
-const Header = (props) => {
+const Header = ({ isAuthenticated }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  //console.log("header", isAuthenticated);
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -59,8 +73,8 @@ const Header = (props) => {
             <BsNavlink route="/blogs" title="Blog" />
             <BsNavlink route={"/salih18"} title="Github" />
             <BsNavlink route="/cv" title="CV" />
-            <Login />
-            <Logout />
+            {!isAuthenticated && <Login />}
+            {isAuthenticated && <Logout />}
           </Nav>
         </Collapse>
       </Navbar>

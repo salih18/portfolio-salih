@@ -2,9 +2,9 @@ import React from "react";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/BasePage";
 
-const Portfolios = () => {
+const Portfolios = ({user, isAuthenticated}) => {
   return (
-    <BaseLayout>
+    <BaseLayout isAuthenticated={isAuthenticated}>
       <BasePage>
         <h1>Portfolios Page</h1>
       </BasePage>
