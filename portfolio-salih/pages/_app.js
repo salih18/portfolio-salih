@@ -6,13 +6,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./../styles/main.scss";
 
 function MyApp({ Component, pageProps }) {
+
   return <Component {...pageProps} />;
 }
 
 MyApp.getInitialProps = async (appContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
-  //console.log({ appProps });
+  console.log({ appProps });
 
   const user =
     typeof window === "undefined" //we are at server
@@ -27,3 +28,4 @@ MyApp.getInitialProps = async (appContext) => {
 };
 
 export default MyApp;
+ 

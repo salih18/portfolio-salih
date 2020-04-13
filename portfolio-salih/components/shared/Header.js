@@ -73,6 +73,7 @@ const Header = ({ isAuthenticated }) => {
             <BsNavlink route="/blogs" title="Blog" />
             <BsNavlink route={"/salih18"} title="Github" />
             <BsNavlink route="/cv" title="CV" />
+            <BsNavlink route="/secret" title="Secret" />
             {!isAuthenticated && <Login />}
             {isAuthenticated && <Logout />}
           </Nav>

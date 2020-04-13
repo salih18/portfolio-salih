@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./../shared/Header";
 
 const BaseLayout = ({ className, children, user, isAuthenticated }) => {
+  console.log('header', isAuthenticated)
  // console.log("baselayout", isAuthenticated);
   return (
     <div className="layout-container">
