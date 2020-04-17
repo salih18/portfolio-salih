@@ -18,7 +18,6 @@ export default async (req, res) => {
   }
   try {
     const check = await auth0.verifyToken(req.headers.authorization);
-    console.log({ check });
   } catch (error) {
     res.status(403).send("Invalid token");
   }

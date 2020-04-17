@@ -1,5 +1,11 @@
+@import "./shared/colors";
+@import "./shared/fonts";
+
 // Pages
 @import "./index";
+@import "./portfolios";
+
+// Components
 @import "./header";
 
 html,
@@ -20,11 +26,27 @@ body {
   position: absolute;
 }
 
-.base-page {
-  padding-top: 150px;
-  color: white;
-}
-
 .clickable {
   cursor: pointer;
+}
+
+.error {
+  font-weight: 700;
+  color: red;
+}
+
+.base-page {
+  padding: 150px 0;
+  color: black;
+  background-color: #ecedee;
+  min-height: 100vh;
+
+  .page-header {
+    .page-header-title {
+      font-weight: 700;
+      color: black;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+  }
 }

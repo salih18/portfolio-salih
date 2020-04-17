@@ -48,15 +48,14 @@ const Logout = () => {
   );
 };
 
-const Header = ({ isAuthenticated }) => {
+const Header = ({ isAuthenticated, className }) => {
   const [isOpen, setIsOpen] = useState(false);
-  //console.log("header", isAuthenticated);
   const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div>
       <Navbar
-        className="port-navbar port-default absolute"
+        className={`port-navbar port-nav-base absolute ${className}`}
         color="transparent"
         dark
         expand="md"
@@ -73,7 +72,6 @@ const Header = ({ isAuthenticated }) => {
             <BsNavlink route="/blogs" title="Blog" />
             <BsNavlink route={"/salih18"} title="Github" />
             <BsNavlink route="/cv" title="CV" />
-            <BsNavlink route="/secret" title="Secret" />
             {!isAuthenticated && <Login />}
             {isAuthenticated && <Logout />}
           </Nav>

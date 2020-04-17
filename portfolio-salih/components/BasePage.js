@@ -2,10 +2,18 @@ import React from "react";
 import { Container } from "reactstrap";
 import PropTypes from "prop-types";
 
-const BasePage = ({ children, className }) => {
+const BasePage = ({ children, className, title }) => {
   return (
     <div className={`base-page ${className}`}>
-      <Container>{children}</Container>
+      <Container>
+        {" "}
+        {title && (
+          <div className="page-header">
+            <h1 className="page-header-title">{title}</h1>
+          </div>
+        )}
+        {children}
+      </Container>
     </div>
   );
 };
@@ -15,7 +23,7 @@ BasePage.defaultProps = {
 };
 
 BasePage.propTypes = {
-  className : PropTypes.string.isRequired,
-}
+  className: PropTypes.string.isRequired,
+};
 
 export default BasePage;
