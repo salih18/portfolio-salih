@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import catchErrors from "../utils/catchErrors";
+import PortfolioCard from "./../components/portfolios/PortfolioCard";
 
 import {
   Row,
@@ -23,7 +24,12 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
   const router = useRouter();
   const isSiteOwner = user && user.sub === portfolios[0].userId;
 
-  const displayDeleteWarning = async (portfolioId) => {
+  const navigaToUpdate = (e) => {
+    e.stopPropagation();
+  };
+
+  const displayDeleteWarning = async (portfolioId, e) => {
+    e.stopPropagation();
     const isConfirm = confirm("Do you want to delete this portfolio?");
     if (isConfirm) {
       await deletePortfolio(portfolioId);
@@ -49,49 +55,36 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
     return portfolios.map((portfolio, index) => {
       return (
         <Col md="4" key={portfolio._id}>
-          <>
-            <span>
-              <Card className="portfolio-card">
-                <CardHeader className="portfolio-card-header">
-                  {portfolio.position}
-                </CardHeader>
-                <CardBody>
-                  <p className="portfolio-card-city"> {portfolio.location} </p>
-                  <CardTitle className="portfolio-card-title">
-                    {portfolio.company}
-                  </CardTitle>
-                  <CardText className="portfolio-card-text">
-                    {portfolio.description}
-                  </CardText>
-                  <div className="readMore"> </div>
-                </CardBody>
-                {isAuthenticated && isSiteOwner && (
-                  <Row>
-                    <Col md="4">
-                      <Link
-                        href={{
-                          pathname: "/portfolioEdit",
-                          query: { _id: portfolio._id },
-                        }}
-                      >
-                        <Button color="warning" className="m-2 px-4">
-                          Update
-                        </Button>
-                      </Link>
+          <PortfolioCard portfolio={portfolio}>
+            {isAuthenticated && isSiteOwner && (
+              <Row>
+                <Col md="4">
+                  <Link
+                    href={{
+                      pathname: "/portfolioEdit",
+                      query: { _id: portfolio._id },
+                    }}
+                  >
+                    <Button
+                      onClick={(e) => navigaToUpdate( e)}
+                      color="warning"
+                      className="m-2 px-4"
+                    >
+                      Update
+                    </Button>
+                  </Link>
 
-                      <Button
-                        onClick={() => displayDeleteWarning(portfolio._id)}
-                        color="danger"
-                        className="m-2 px-4"
-                      >
-                        Delete
-                      </Button>
-                    </Col>
-                  </Row>
-                )}
-              </Card>
-            </span>
-          </>
+                  <Button
+                    onClick={(e) => displayDeleteWarning(portfolio._id, e)}
+                    color="danger"
+                    className="m-2 px-4"
+                  >
+                    Delete
+                  </Button>
+                </Col>
+              </Row>
+            )}
+          </PortfolioCard>
         </Col>
       );
     });
