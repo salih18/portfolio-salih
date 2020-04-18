@@ -12,6 +12,7 @@ const BaseLayout = ({
   return (
     <>
       <Head>
+        <title>Salih Sert</title>
         <link
           href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
           rel="stylesheet"
@@ -22,6 +23,10 @@ const BaseLayout = ({
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
           crossorigin="anonymous"
         />
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+        ></link>
       </Head>
       <div className="layout-container">
         <Header

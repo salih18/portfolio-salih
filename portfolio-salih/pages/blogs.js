@@ -7,7 +7,7 @@ import moment from "moment";
 
 const Blogs = ({ user, isAuthenticated }) => {
   return (
-    <BaseLayout headerType={"landing"} className="blog-listing-page">
+    <BaseLayout headerType={"landing"} isAuthenticated={isAuthenticated} className="blog-listing-page">
       <div
         className="masthead"
         style={{ backgroundImage: "url('/static/images/home-bg.jpg')" }}
