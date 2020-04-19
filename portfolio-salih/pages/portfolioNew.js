@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { toast } from "react-toastify";
 import BaseLayout from "./../components/layouts/BaseLayout";
 import BasePage from "./../components/BasePage";
 import PortfolioCreateForm from "./../components/portfolios/PortfolioCreateForm";
@@ -35,10 +36,11 @@ const PortfolioNew = ({ user, isAuthenticated }) => {
       const payload = portfolioData;
       const headers = { headers: { Authorization: token } };
       await axios.post(url, payload, headers);
+      toast.success("Portfolio created successfully");
       setSuccess(true);
       router.push("/portfolios");
     } catch (error) {
-      catchErrors(error, window.alert);
+      catchErrors(error, toast.error);
     } finally {
       setLoading(false);
     }

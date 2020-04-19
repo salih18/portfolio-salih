@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { toast } from "react-toastify";
 import BaseLayout from "./../components/layouts/BaseLayout";
 import BasePage from "./../components/BasePage";
 import PortfolioCreateForm from "./../components/portfolios/PortfolioCreateForm";
@@ -18,7 +19,6 @@ const PortfolioEdit = ({ user, isAuthenticated, portfolio }) => {
   const [editing, setEditing] = useState(true);
   const router = useRouter();
 
-
   const updatePortfolio = async (portfolioData) => {
     try {
       setLoading(true);
@@ -27,10 +27,11 @@ const PortfolioEdit = ({ user, isAuthenticated, portfolio }) => {
       const payload = portfolioData;
       const headers = { headers: { Authorization: token } };
       await axios.post(url, payload, headers);
+      toast.success("Portfolio updated successfully");
       setSuccess(true);
       router.push("/portfolios");
     } catch (error) {
-      catchErrors(error, window.alert);
+      catchErrors(error, toast.error);
     } finally {
       setLoading(false);
     }

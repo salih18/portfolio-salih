@@ -181,3 +181,28 @@
     display: block;
   }
 }
+
+// USER_BLOGS --------------------------------------
+.base-page {
+  .user-blogs-list {
+    list-style: none;
+    padding-left: 0;
+
+    > li {
+      font-size: 24px;
+      color: black;
+    }
+
+    a {
+      color: #726c6c;
+    }
+  }
+
+  .blog-status-title {
+    font-weight: bold;
+  }
+
+  .port-dropdown {
+    margin-left: 10px;
+  }
+}

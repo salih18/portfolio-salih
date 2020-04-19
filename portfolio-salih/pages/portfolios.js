@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/BasePage";
 import baseUrl from "./../utils/baseUrl";
@@ -18,6 +19,7 @@ import {
   CardTitle,
   CardText,
   Button,
+  ButtonGroup,
 } from "reactstrap";
 
 const Portfolios = ({ user, isAuthenticated, portfolios }) => {
@@ -47,7 +49,7 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
       await axios.delete(url, payload);
       router.push("/portfolios");
     } catch (error) {
-      catchErrors(error, window.alert);
+      catchErrors(error, toast.error);
     }
   };
 
@@ -58,29 +60,35 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
           <PortfolioCard portfolio={portfolio}>
             {isAuthenticated && isSiteOwner && (
               <Row>
-                <Col md="4">
-                  <Link
-                    href={{
-                      pathname: "/portfolioEdit",
-                      query: { _id: portfolio._id },
-                    }}
-                  >
-                    <Button
-                      onClick={(e) => navigaToUpdate( e)}
-                      color="warning"
-                      className="m-2 px-4"
+                <Col >
+                  <ButtonGroup>
+                    <Link
+                      href={{
+                        pathname: "/portfolioEdit",
+                        query: { _id: portfolio._id },
+                      }}
                     >
-                      Update
-                    </Button>
-                  </Link>
+                      <Button
+                        color="primary"
+                        size="sm"
+                        onClick={(e) => navigaToUpdate(e)}
+                        color="warning"
+                        className="m-2 px-2"
+                      >
+                        Update
+                      </Button>
+                    </Link>
 
-                  <Button
-                    onClick={(e) => displayDeleteWarning(portfolio._id, e)}
-                    color="danger"
-                    className="m-2 px-4"
-                  >
-                    Delete
-                  </Button>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={(e) => displayDeleteWarning(portfolio._id, e)}
+                      color="danger"
+                      className="m-2 px-2"
+                    >
+                      Delete
+                    </Button>
+                  </ButtonGroup>
                 </Col>
               </Row>
             )}

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import BaseLayout from "./../components/layouts/BaseLayout";
@@ -10,26 +9,26 @@ import baseUrl from "./../utils/baseUrl";
 import Cookies from "js-cookie";
 import catchErrors from "../utils/catchErrors";
 
-const BlogEditor = ({ user, isAuthenticated }) => {
+const BlogEditorUpdate = ({ user, isAuthenticated, blog }) => {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
-  const saveBlog = async (story, heading) => {
-    let blog = {};
-    blog.title = heading.title;
-    blog.subTitle = heading.subtitle;
-    blog.story = story;
+
+  const updateBlog = async (story, heading) => {
+    const newBlog = {};
+    newBlog._id = blog._id;
+    newBlog.title = heading.title;
+    newBlog.subTitle = heading.subtitle;
+    newBlog.story = story;
 
     try {
       const token = Cookies.get("jwt");
       const url = `${baseUrl}/api/blog`;
-      const payload = blog;
+      const payload = newBlog;
       const headers = { headers: { Authorization: token } };
       setSaving(true);
-      const response = await axios.post(url, payload, headers);
-      toast.success("Blog created successfully");
+      await axios.post(url, payload, headers);
+      toast.success("Blog updated successfully");
       setSuccess(true);
-      router.push(`/blogEditorUpdate?_id=${response.data._id}`);
     } catch (error) {
       catchErrors(error, toast.error);
     } finally {
@@ -40,10 +39,22 @@ const BlogEditor = ({ user, isAuthenticated }) => {
   return (
     <BaseLayout isAuthenticated={isAuthenticated}>
       <BasePage containerClass="editor-wrapper" className="blog-editor-page">
-        <SlateEditor saveBlog={saveBlog} isSaving={saving} isSuccess={success} />
+        <SlateEditor
+          initialValue={blog.story}
+          saveBlog={updateBlog}
+          isSaving={saving}
+        />
       </BasePage>
     </BaseLayout>
   );
 };
 
-export default BlogEditor;
+BlogEditorUpdate.getInitialProps = async (ctx) => {
+  const _id = ctx.query._id;
+  const url = `${baseUrl}/api/blog`;
+  const payload = { params: { _id } };
+  const response = await axios.get(url, payload);
+  return { blog: response.data };
+};
+
+export default BlogEditorUpdate;

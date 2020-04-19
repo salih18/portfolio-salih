@@ -1,7 +1,6 @@
 import React from "react";
 import BaseLayout from "./../layouts/BaseLayout";
 import BasePage from "./../BasePage";
-import App from "next/app";
 
 const NAMESPACE = "http://localhost:3000";
 
