@@ -1,13 +1,43 @@
 import React from "react";
+import axios from "axios";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/BasePage";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 import moment from "moment";
+import baseUrl from "./../utils/baseUrl";
+import { shortenText } from "./../utils/helpers";
 
-const Blogs = ({ user, isAuthenticated }) => {
+const Blogs = ({ user, isAuthenticated, blogs }) => {
+  const renderBlogs = (blogs) =>
+    blogs.map((blog, index) => (
+      <div key={index} className="post-preview">
+        <Link
+          href={{
+            pathname: `/blogDetail`,
+            query: { blog: blog.slug },
+          }}
+        >
+          <a>
+            <h2 className="post-title">{blog.title}</h2>
+            <h3 className="post-subtitle">{shortenText(blog.subTitle)}</h3>
+          </a>
+        </Link>
+        <p className="post-meta">
+          Posted by
+          <a href="#"> {blog.author} </a>
+          {moment(blog.createdDate).format("LL")}
+        </p>
+      </div>
+    ));
+
   return (
-    <BaseLayout headerType={"landing"} isAuthenticated={isAuthenticated} className="blog-listing-page">
+    <BaseLayout
+      isAuthenticated={isAuthenticated}
+      headerType={"landing"}
+      className="blog-listing-page"
+      title="Salih Sert - Newest Blogs to Read"
+    >
       <div
         className="masthead"
         style={{ backgroundImage: "url('/static/images/home-bg.jpg')" }}
@@ -27,58 +57,7 @@ const Blogs = ({ user, isAuthenticated }) => {
       <BasePage className="blog-body">
         <Row>
           <Col md="10" lg="8" className="mx-auto">
-            {
-              <React.Fragment>
-                <div className="post-preview">
-                  <Link href={`/blogs/blogId`}>
-                    <a>
-                      <h2 className="post-title">Very Nice Blog Post</h2>
-                      <h3 className="post-subtitle">
-                        How I Start Porgramming...
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className="post-meta">
-                    Posted by
-                    <a href="#"> Salih SERT </a>
-                    {moment().format("LLLL")}
-                  </p>
-                </div>
-                <hr></hr>
-                <div className="post-preview">
-                  <Link href={`/blogs/blogId`}>
-                    <a>
-                      <h2 className="post-title">Very Nice Blog Post</h2>
-                      <h3 className="post-subtitle">
-                        How I Start Porgramming...
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className="post-meta">
-                    Posted by
-                    <a href="#"> Salih </a>
-                    {moment().format("LLLL")}
-                  </p>
-                </div>
-                <hr></hr>
-                <div className="post-preview">
-                  <Link href={`/blogs/blogId`}>
-                    <a>
-                      <h2 className="post-title">Very Nice Blog Post</h2>
-                      <h3 className="post-subtitle">
-                        How I Start Porgramming...
-                      </h3>
-                    </a>
-                  </Link>
-                  <p className="post-meta">
-                    Posted by
-                    <a href="#"> Salih</a>
-                    {moment().format("LLLL")}
-                  </p>
-                </div>
-                <hr></hr>
-              </React.Fragment>
-            }
+            {renderBlogs(blogs)}
             <div className="clearfix">
               <a className="btn btn-primary float-right" href="#">
                 Older Posts &rarr;
@@ -93,15 +72,10 @@ const Blogs = ({ user, isAuthenticated }) => {
               <div className="col-lg-8 col-md-10 mx-auto">
                 <ul className="list-inline text-center">
                   <li className="list-inline-item">
-                    <a href="#">
-                      <span className="fa-stack fa-lg">
-                        <i className="fas fa-circle fa-stack-2x"></i>
-                        <i className="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                      </span>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">
+                    <a
+                      target="_blank"
+                      href="https://www.facebook.com/groups/217273012433804/?jazoest=26510012195869511271971084598756511378108122691091131211141201017010910474116557610010645897511574116115668565119119586510012177701165586491061151219048557183120488290847377451207611983109114112118697610912011183109109521091159581"
+                    >
                       <span className="fa-stack fa-lg">
                         <i className="fas fa-circle fa-stack-2x"></i>
                         <i className="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
@@ -109,7 +83,7 @@ const Blogs = ({ user, isAuthenticated }) => {
                     </a>
                   </li>
                   <li className="list-inline-item">
-                    <a href="#">
+                    <a target="_blank" href="https://github.com/Jerga99">
                       <span className="fa-stack fa-lg">
                         <i className="fas fa-circle fa-stack-2x"></i>
                         <i className="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -125,8 +99,19 @@ const Blogs = ({ user, isAuthenticated }) => {
           </Container>
         </footer>
       </BasePage>
+      <style jsx>
+        {`
+          @import url("https://use.fontawesome.com/releases/v5.5.0/css/all.css");
+        `}
+      </style>
     </BaseLayout>
   );
+};
+
+Blogs.getInitialProps = async () => {
+  const url = `${baseUrl}/api/blogs`;
+  const response = await axios.get(url);
+  return { blogs: response.data };
 };
 
 export default Blogs;

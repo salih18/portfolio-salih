@@ -36,6 +36,7 @@
     "sass": "^1.26.3",
     "slate": "0.44.6",
     "slate-html-serializer": "0.7.30",
-    "slate-react": "^0.21.12"
+    "slate-react": "^0.21.12",
+    "slugify": "^1.4.0"
   }
 }

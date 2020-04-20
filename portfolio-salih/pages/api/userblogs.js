@@ -7,9 +7,6 @@ const NAMESPACE = "http://localhost:3000";
 connectDb();
 
 export default async (req, res) => {
-  console.log(
-    "userblogs request taken---------------------------------------------------------------------------------------------"
-  );
   if (!("authorization" in req.headers)) {
     return res.status(401).send("No authorization token");
   }
@@ -20,7 +17,7 @@ export default async (req, res) => {
       return res.status(422).send("You are not allowed to view this page");
     }
     const userBlogs = await Blog.find({ userId: user.sub }).sort({
-      startDate: 1,
+      createdDate: 1,
     });
     res.status(200).json(userBlogs);
   } catch (error) {

@@ -1,3 +1,4 @@
+const slugify = require("slugify");
 import Blog from "../../models/Blog";
 import connectDb from "../../utils/connectDb";
 import auth0 from "./../../services/auth0";
@@ -23,9 +24,15 @@ export default async (req, res) => {
 };
 
 async function handleGetRequest(req, res) {
-  const { _id } = req.query;
-  const blog = await Blog.findOne({ _id });
-  res.status(200).json(blog);
+  const { _id, slug } = req.query;
+  console.log("id", _id, "slug", slug);
+  if (_id) {
+    const blog = await Blog.findOne({ _id });
+    return res.status(200).json(blog);
+  } else if (slug) {
+    const blog = await Blog.findOne({ slug });
+    return res.status(200).json(blog);
+  }
 }
 
 async function handlePostRequest(req, res) {
@@ -39,12 +46,8 @@ async function handlePostRequest(req, res) {
       return res.send("You are not allowed to view this page");
     }
 
-    const { _id, title, subTitle, story } = req.body;
-    console.log({ _id });   
-    console.log({ title });
-    console.log({ subTitle });
-    console.log({ story });
-    if (!title || !subTitle || !story) {
+    const { _id, title, subTitle, story, status } = req.body;
+    if ((!title || !subTitle || !story) && !status) {
       return res.status(422).send("Blog missing one or more fields");
     }
 
@@ -54,12 +57,22 @@ async function handlePostRequest(req, res) {
       title,
       subTitle,
       story,
+      status,
     };
 
     let blog = await Blog.findOne({ _id });
-    console.log({ blog });
+
     if (blog) {
-      blogFields.updatedAt = new Date()
+      if (status && status === "published" && !blog.slug) {
+        blogFields.slug = slugify(blog.title, {
+          replacement: "-",
+          remove: null,
+          lower: true,
+          strict: false,
+        });
+      }
+
+      blogFields.updatedAt = new Date();
       blog = await Blog.findOneAndUpdate(
         { _id },
         { $set: blogFields },
@@ -69,7 +82,7 @@ async function handlePostRequest(req, res) {
     }
 
     blog = await new Blog(blogFields);
-    console.log({ blog });
+
     await blog.save();
     res.status(201).json(blog);
   } catch (error) {
