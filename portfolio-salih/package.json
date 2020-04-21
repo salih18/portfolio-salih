@@ -1,13 +1,17 @@
 {
   "name": "portfolio-salih",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "Portfolio App Next",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
