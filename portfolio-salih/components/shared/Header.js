@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
 import {
   Collapse,
   Navbar,
@@ -7,15 +9,25 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
+  Dropdown,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu,
 } from "reactstrap";
 
 import auth0 from "../../services/auth0";
 
-const BsNavlink = ({ route, title }) => {
+const BsNavlink = ({ route, title, active, className = "" }) => {
   return (
     <NavItem className="port-navbar-item">
       <Link href={route}>
-        <a className="nav-link port-navbar-link">{title}</a>
+        <a
+          className={`nav-link port-navbar-link ${
+            active && "active"
+          } ${className}`}
+        >
+          {title}
+        </a>
       </Link>
     </NavItem>
   );
@@ -48,14 +60,63 @@ const Logout = () => {
   );
 };
 
-const Header = ({ isAuthenticated, className }) => {
+const Header = ({ isAuthenticated, className, userRole }) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
+  const isActive = (route) => route === router.pathname;
+
+  const renderBlogMenu = () => {
+    if (userRole === "siteOwner") {
+      return (
+        <Dropdown
+          className="port-navbar-link port-dropdown-menu"
+          nav
+          isOpen={dropdownOpen}
+          toggle={toggleDropdown}
+        >
+          <DropdownToggle className="port-dropdown-toggle" nav caret>
+            Blog
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>
+              <BsNavlink
+                className="port-dropdown-item"
+                route="/blogs"
+                title="Blogs"
+                active={isActive("/blogs")}
+              />
+            </DropdownItem>
+            <DropdownItem>
+              <BsNavlink
+                className="port-dropdown-item"
+                route="/blogEditor"
+                title="Create a Blog"
+                active={isActive("/blogEditor")}
+              />
+            </DropdownItem>
+            <DropdownItem>
+              <BsNavlink
+                className="port-dropdown-item"
+                route="/userBlogs"
+                title="Blogs Dashboard"
+                active={isActive("/userBlogs")}
+              />
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      );
+    }
+  };
   return (
     <div>
       <Navbar
-        className={`port-navbar port-nav-base absolute ${className}`}
+        className={`port-navbar port-nav-base absolute ${className} ${
+          isOpen ? "menu-open" : "menu-close"
+        }`}
         color="transparent"
         dark
         expand="md"
@@ -66,12 +127,26 @@ const Header = ({ isAuthenticated, className }) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <BsNavlink route="/" title="Home" />
-            <BsNavlink route="/about" title="About" />
-            <BsNavlink route="/portfolios" title="Portfolio" />
-            <BsNavlink route="/blogs" title="Blog" />
-            <BsNavlink route={"/salih18"} title="Github" />
-            <BsNavlink route="/cv" title="CV" />
+            <BsNavlink route="/" title="Home" active={isActive("/")} />
+            <BsNavlink
+              route="/about"
+              title="About"
+              active={isActive("/about")}
+            />
+            <BsNavlink
+              route="/portfolios"
+              title="Portfolio"
+              active={isActive("/portfolios")}
+            />
+            {userRole !== "siteOwner" && (
+              <BsNavlink
+                route="/blogs"
+                title="Blog"
+                active={isActive("/blogs")}
+              />
+            )}
+            {renderBlogMenu()}
+            <BsNavlink route="/cv" title="CV" active={isActive("/cv")} />
             {!isAuthenticated && <Login />}
             {isAuthenticated && <Logout />}
           </Nav>

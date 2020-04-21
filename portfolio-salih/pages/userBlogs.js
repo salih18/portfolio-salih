@@ -9,12 +9,12 @@ import BaseLayout from "./../components/layouts/BaseLayout";
 import BasePage from "./../components/BasePage";
 import ButtonDropdown from "./../components/ButtonDropDown";
 import withAuth from "./../components/hoc/withAuth";
-
 import { Col, Row, Container, Button } from "reactstrap";
-import baseUrl from "./../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 
-const UserBlogs = ({ user, isAuthenticated, userBlogs }) => {
+const BASE_URL = process.env.BASE_URL;
+
+const UserBlogs = ({ user, isAuthenticated, userBlogs, userRole }) => {
   const router = useRouter();
 
   const separateBlogs = (blogs) => {
@@ -32,7 +32,7 @@ const UserBlogs = ({ user, isAuthenticated, userBlogs }) => {
     newBlog.status = status;
     try {
       const token = Cookies.get("jwt");
-      const url = `${baseUrl}/api/blog`;
+      const url = `${BASE_URL}/api/blog`;
       const payload = newBlog;
       const headers = { headers: { Authorization: token } };
       await axios.post(url, payload, headers);
@@ -49,7 +49,7 @@ const UserBlogs = ({ user, isAuthenticated, userBlogs }) => {
     if (res) {
       try {
         const token = Cookies.get("jwt");
-        const url = `${baseUrl}/api/blog`;
+        const url = `${BASE_URL}/api/blog`;
         const payload = {
           params: { _id: blogId },
           headers: { Authorization: token },
@@ -106,6 +106,7 @@ const UserBlogs = ({ user, isAuthenticated, userBlogs }) => {
       headerType={"landing"}
       isAuthenticated={isAuthenticated}
       className="blog-listing-page"
+      userRole={userRole}
     >
       <div
         className="masthead"
@@ -137,14 +138,12 @@ const UserBlogs = ({ user, isAuthenticated, userBlogs }) => {
             <hr className="w-50" />
 
             {renderBlogs(published)}
-
           </Col>
           <Col md="6" className="mx-auto text-center">
             <h2 className="blog-status-title"> Draft Blogs </h2>
             <hr className="w-50" />
 
             {renderBlogs(drafts)}
-            
           </Col>
         </Row>
       </BasePage>
@@ -159,7 +158,7 @@ UserBlogs.getInitialProps = async (ctx) => {
       toast.error("You should login again");
       return { userBlogs: [] };
     }
-    const url = `${baseUrl}/api/userblogs`;
+    const url = `${BASE_URL}/api/userblogs`;
     const payload = { headers: { Authorization: jwt } };
     const response = await axios.get(url, payload);
     return { userBlogs: response.data };

@@ -3,7 +3,7 @@ import Blog from "../../models/Blog";
 import connectDb from "../../utils/connectDb";
 import auth0 from "./../../services/auth0";
 
-const NAMESPACE = "http://localhost:3000";
+const NAMESPACE = process.env.NAMESPACE;
 
 connectDb();
 
@@ -25,7 +25,6 @@ export default async (req, res) => {
 
 async function handleGetRequest(req, res) {
   const { _id, slug } = req.query;
-  console.log("id", _id, "slug", slug);
   if (_id) {
     const blog = await Blog.findOne({ _id });
     return res.status(200).json(blog);

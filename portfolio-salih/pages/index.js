@@ -1,27 +1,64 @@
-import Head from "next/head";
+import { useState, useEffect } from "react";
 import Typed from "react-typed";
 import { Row, Col, Container } from "reactstrap";
 import BaseLayout from "./../components/layouts/BaseLayout";
 
-const Index = ({ user, isAuthenticated }) => {
+const Index = ({ user, isAuthenticated, userRole }) => {
+  const [flipping, setFlipping] = useState(false);
   const roleTyped = ["Web Developer", "React.js", "Next.js", "Tech Lover"];
+
+  const animateCard = () => {
+    const cardAnimationInterval = setInterval(() => {
+      setFlipping(!flipping);
+    }, 15000);
+    return cardAnimationInterval;
+  };
+
+  useEffect(() => {
+    const cardAnimationInterval = animateCard();
+    return () => {
+      cardAnimationInterval && clearInterval(cardAnimationInterval);
+    };
+  }, [flipping]);
 
   return (
     <BaseLayout
       isAuthenticated={isAuthenticated}
-      className="cover"
+      className={`cover ${flipping ? "cover-1" : "cover-0"}`}
       headerType="index"
+      userRole={userRole}
+      title="Salih - Portfolio Page"
     >
       <div className="main-section">
-        <div className="background-image">
-          <img src="/static/images/background-index.png" />
+        <div className="background-image img-fluid">
+          <img
+            className="img-fluid"
+            src="/static/images/background-index.png"
+            alt="background-image"
+          />
         </div>
 
         <Container>
           <Row>
             <Col md="6">
               <div className="hero-section">
-                <div className={`flipper`}>
+                <div className={`flipper ${flipping ? "isFlipping" : ""}`}>
+                  <div className="front">
+                    <div className="hero-section-content">
+                      <h2> Full Stack Web Developer </h2>
+                      <div className="hero-section-content-intro">
+                        Have a look at my portfolio and job history.
+                      </div>
+                    </div>
+                    <img
+                      className="image"
+                      src="/static/images/section-1.png"
+                      alt="home page flipping image first"
+                    />
+                    <div className="shadow-custom">
+                      <div className="shadow-inner"> </div>
+                    </div>
+                  </div>
                   <div className="back">
                     <div className="hero-section-content">
                       <h2> Full Stack Web Developer </h2>
@@ -29,8 +66,12 @@ const Index = ({ user, isAuthenticated }) => {
                         Have a look at my portfolio and job history.
                       </div>
                     </div>
-                    <img className="image" src="/static/images/section-1.png" />
-                    <div className="shadow-custom">
+                    <img
+                      className="image"
+                      src="/static/images/section-2.png"
+                      alt="home page flipping image second"
+                    />
+                    <div className="shadow-custom shadow-custom-2">
                       <div className="shadow-inner"> </div>
                     </div>
                   </div>

@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import withAuth from "./../components/hoc/withAuth";
 import BaseLayout from "./../components/layouts/BaseLayout";
 import BasePage from "./../components/BasePage";
 import SlateEditor from "./../components/slate-editor/Editor";
-
-import baseUrl from "./../utils/baseUrl";
 import Cookies from "js-cookie";
 import catchErrors from "../utils/catchErrors";
 
-const BlogEditor = ({ user, isAuthenticated }) => {
+const BASE_URL = process.env.BASE_URL;
+
+const BlogEditor = ({ isAuthenticated, userRole }) => {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -22,7 +23,7 @@ const BlogEditor = ({ user, isAuthenticated }) => {
 
     try {
       const token = Cookies.get("jwt");
-      const url = `${baseUrl}/api/blog`;
+      const url = `${BASE_URL}/api/blog`;
       const payload = blog;
       const headers = { headers: { Authorization: token } };
       setSaving(true);
@@ -38,12 +39,16 @@ const BlogEditor = ({ user, isAuthenticated }) => {
   };
 
   return (
-    <BaseLayout isAuthenticated={isAuthenticated}>
+    <BaseLayout isAuthenticated={isAuthenticated} userRole={userRole}>
       <BasePage containerClass="editor-wrapper" className="blog-editor-page">
-        <SlateEditor saveBlog={saveBlog} isSaving={saving} isSuccess={success} />
+        <SlateEditor
+          saveBlog={saveBlog}
+          isSaving={saving}
+          isSuccess={success}
+        />
       </BasePage>
     </BaseLayout>
   );
 };
 
-export default BlogEditor;
+export default withAuth("siteOwner")(BlogEditor);

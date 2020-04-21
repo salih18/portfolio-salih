@@ -3,26 +3,16 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/BasePage";
-import baseUrl from "./../utils/baseUrl";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import catchErrors from "../utils/catchErrors";
 import PortfolioCard from "./../components/portfolios/PortfolioCard";
+import { Row, Col, Button, ButtonGroup } from "reactstrap";
 
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  CardText,
-  Button,
-  ButtonGroup,
-} from "reactstrap";
+const BASE_URL = process.env.BASE_URL;
 
-const Portfolios = ({ user, isAuthenticated, portfolios }) => {
+const Portfolios = ({ user, isAuthenticated, portfolios, userRole }) => {
   const router = useRouter();
   const isSiteOwner = user && user.sub === portfolios[0].userId;
 
@@ -41,7 +31,7 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
   const deletePortfolio = async (portfolioId) => {
     try {
       const token = Cookies.get("jwt");
-      const url = `${baseUrl}/api/portfolio`;
+      const url = `${BASE_URL}/api/portfolio`;
       const payload = {
         params: { _id: portfolioId },
         headers: { Authorization: token },
@@ -60,7 +50,7 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
           <PortfolioCard portfolio={portfolio}>
             {isAuthenticated && isSiteOwner && (
               <Row>
-                <Col >
+                <Col>
                   <ButtonGroup>
                     <Link
                       href={{
@@ -99,7 +89,11 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
   };
 
   return (
-    <BaseLayout isAuthenticated={isAuthenticated}>
+    <BaseLayout
+      isAuthenticated={isAuthenticated}
+      userRole={userRole}
+      title="Salih - Learn About My Career"
+    >
       <BasePage className="portfolio-page" title="Portfolios">
         {isAuthenticated && (
           <Link href="/portfolioNew">
@@ -115,7 +109,7 @@ const Portfolios = ({ user, isAuthenticated, portfolios }) => {
 };
 
 Portfolios.getInitialProps = async () => {
-  const url = `${baseUrl}/api/portfolios`;
+  const url = `${BASE_URL}/api/portfolios`;
   const response = await axios.get(url);
   return { portfolios: response.data };
 };

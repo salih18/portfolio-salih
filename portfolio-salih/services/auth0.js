@@ -3,13 +3,16 @@ import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 
+const BASE_URL = process.env.BASE_URL;
+const CLIENT_ID = process.env.CLIENT_ID;
+
 class Auth0 {
   constructor() {
     this.auth0 = new auth0.WebAuth({
       domain: "dev-76jc-7jk.auth0.com",
-      clientID: "XWudUslNATT3Zds70v3yvTA04M7ffdSO",
-      redirectUri: "http://localhost:3000/callback",
-      postLogoutRedirectUri: "http://localhost:3000",
+      clientID: CLIENT_ID,
+      redirectUri: `${BASE_URL}/callback`,
+      postLogoutRedirectUri: BASE_URL,
       responseType: "token id_token",
       scope: "openid profile",
     });
@@ -35,23 +38,15 @@ class Auth0 {
     });
   }
   setSession(authResult) {
-    const expiresAt = JSON.stringify(
-      authResult.expiresIn * 1000 + new Date().getTime()
-    );
-
-    Cookies.set("user", authResult.idTokenPayload);
     Cookies.set("jwt", authResult.idToken);
-    Cookies.set("expiresAt", expiresAt);
   }
 
   logout() {
-    Cookies.remove("user");
     Cookies.remove("jwt");
-    Cookies.remove("expiresAt");
 
     this.auth0.logout({
       returnTo: "",
-      clientID: "XWudUslNATT3Zds70v3yvTA04M7ffdSO",
+      clientID: CLIENT_ID,
     });
   }
 

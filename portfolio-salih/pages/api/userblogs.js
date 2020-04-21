@@ -2,7 +2,7 @@ import connectDb from "../../utils/connectDb";
 import Blog from "./../../models/Blog";
 import auth0 from "./../../services/auth0";
 
-const NAMESPACE = "http://localhost:3000";
+const NAMESPACE = process.env.NAMESPACE;
 
 connectDb();
 

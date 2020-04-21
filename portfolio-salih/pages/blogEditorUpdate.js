@@ -4,12 +4,12 @@ import { toast } from "react-toastify";
 import BaseLayout from "./../components/layouts/BaseLayout";
 import BasePage from "./../components/BasePage";
 import SlateEditor from "./../components/slate-editor/Editor";
-
-import baseUrl from "./../utils/baseUrl";
 import Cookies from "js-cookie";
 import catchErrors from "../utils/catchErrors";
 
-const BlogEditorUpdate = ({ user, isAuthenticated, blog }) => {
+const BASE_URL = process.env.BASE_URL;
+
+const BlogEditorUpdate = ({ user, isAuthenticated, blog, userRole }) => {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -22,7 +22,7 @@ const BlogEditorUpdate = ({ user, isAuthenticated, blog }) => {
 
     try {
       const token = Cookies.get("jwt");
-      const url = `${baseUrl}/api/blog`;
+      const url = `${BASE_URL}/api/blog`;
       const payload = newBlog;
       const headers = { headers: { Authorization: token } };
       setSaving(true);
@@ -37,7 +37,7 @@ const BlogEditorUpdate = ({ user, isAuthenticated, blog }) => {
   };
 
   return (
-    <BaseLayout isAuthenticated={isAuthenticated}>
+    <BaseLayout isAuthenticated={isAuthenticated} userRole={userRole}>
       <BasePage containerClass="editor-wrapper" className="blog-editor-page">
         <SlateEditor
           initialValue={blog.story}
@@ -51,7 +51,7 @@ const BlogEditorUpdate = ({ user, isAuthenticated, blog }) => {
 
 BlogEditorUpdate.getInitialProps = async (ctx) => {
   const _id = ctx.query._id;
-  const url = `${baseUrl}/api/blog`;
+  const url = `${BASE_URL}/api/blog`;
   const payload = { params: { _id } };
   const response = await axios.get(url, payload);
   return { blog: response.data };

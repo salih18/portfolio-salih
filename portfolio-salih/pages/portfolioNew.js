@@ -9,9 +9,9 @@ import withAuth from "./../components/hoc/withAuth";
 import { Row, Col } from "reactstrap";
 import moment from "moment";
 import Cookies from "js-cookie";
-import Portfolios from "./portfolios";
-import baseUrl from "./../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
+
+const BASE_URL = process.env.BASE_URL;
 
 const INITIAL_VALUES = {
   title: "",
@@ -23,7 +23,7 @@ const INITIAL_VALUES = {
   endDate: moment(),
 };
 
-const PortfolioNew = ({ user, isAuthenticated }) => {
+const PortfolioNew = ({ isAuthenticated, userRole }) => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -32,7 +32,7 @@ const PortfolioNew = ({ user, isAuthenticated }) => {
     try {
       setLoading(true);
       const token = Cookies.get("jwt");
-      const url = `${baseUrl}/api/portfolio`;
+      const url = `${BASE_URL}/api/portfolio`;
       const payload = portfolioData;
       const headers = { headers: { Authorization: token } };
       await axios.post(url, payload, headers);
@@ -47,7 +47,7 @@ const PortfolioNew = ({ user, isAuthenticated }) => {
   };
 
   return (
-    <BaseLayout isAuthenticated={isAuthenticated}>
+    <BaseLayout isAuthenticated={isAuthenticated} userRole={userRole}>
       <BasePage className="portfolio-create-page" title="Create New Portfolio">
         <Row>
           <Col md="6">
@@ -61,12 +61,5 @@ const PortfolioNew = ({ user, isAuthenticated }) => {
     </BaseLayout>
   );
 };
-
-// PortfolioNew.getInitialProps = async () => {
-//   const url = `${baseUrl}/api/portfolio`;
-//   const payload = { params: { _id } };
-//   const response = await axios.post(url);
-//   return { portfolios: response.data };
-// };
 
 export default withAuth("siteOwner")(PortfolioNew);

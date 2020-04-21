@@ -4,13 +4,13 @@ import { Row, Col } from "reactstrap";
 import { toast } from "react-toastify";
 import BaseLayout from "./../components/layouts/BaseLayout";
 import BasePage from "./../components/BasePage";
-
-import baseUrl from "./../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 
-const BlogDetail = ({ isAuthenticated, blog }) => {
+const BASE_URL = process.env.BASE_URL;
+
+const BlogDetail = ({ isAuthenticated, blog, userRole }) => {
   return (
-    <BaseLayout isAuthenticated={isAuthenticated}>
+    <BaseLayout isAuthenticated={isAuthenticated} userRole={userRole}>
       <BasePage className="blog-detail-page">
         <Row>
           <Col md={{ size: 8, offset: 2 }}>
@@ -23,12 +23,15 @@ const BlogDetail = ({ isAuthenticated, blog }) => {
 };
 
 BlogDetail.getInitialProps = async (ctx) => {
-  const slug = ctx.query.blog; // coming from blogs Link component as blog
-  const url = `${baseUrl}/api/blog`;
-  const payload = { params: { slug } };
-  const response = await axios.get(url, payload);
-  console.log(response.data)
-  return { blog: response.data };
+  try {
+    const slug = ctx.query.blog; // coming from blogs Link component as blog
+    const url = `${BASE_URL}/api/blog`;
+    const payload = { params: { slug } };
+    const response = await axios.get(url, payload);
+    return { blog: response.data };
+  } catch (error) {
+    catchErrors(error, toast.error);
+  }
 };
 
 export default BlogDetail;
