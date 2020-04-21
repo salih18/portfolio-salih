@@ -12,7 +12,7 @@ const BaseLayout = ({
   isAuthenticated,
   userRole,
   headerType = "default",
-  title,
+  title = "",
 }) => {
   return (
     <>
