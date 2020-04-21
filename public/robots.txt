@@ -1,0 +1,10 @@
+User-agent *
+
+Disallow: /api/*
+Disallow: /portfolioEdit
+Disallow: /portfolioNew
+Disallow: /userBlogs
+Disallow: /blogEditor
+Disallow: /blogEditorUpdate
+
+
