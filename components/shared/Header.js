@@ -42,7 +42,6 @@ const Login = () => {
       >
         Login
       </span>
-      ;
     </NavItem>
   );
 };

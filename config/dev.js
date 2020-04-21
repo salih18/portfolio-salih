@@ -1,6 +1,6 @@
 // must restart server whenever you make changes in next.config
 module.exports = {
   env: {
-    MONGO_SRV:process.env.DB_URI,
+    MONGO_SRV:"mongodb+srv://test:test12345@portfolio-rzqwq.mongodb.net/test?retryWrites=true&w=majority",
   },
 };
