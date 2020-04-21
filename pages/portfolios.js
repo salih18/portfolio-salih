@@ -14,7 +14,6 @@ const BASE_URL = process.env.BASE_URL;
 
 const Portfolios = ({ user, isAuthenticated, portfolios, userRole }) => {
   const router = useRouter();
-  const isSiteOwner = user && user.sub === portfolios[0].userId;
 
   const navigaToUpdate = (e) => {
     e.stopPropagation();
@@ -48,7 +47,7 @@ const Portfolios = ({ user, isAuthenticated, portfolios, userRole }) => {
       return (
         <Col md="4" key={portfolio._id}>
           <PortfolioCard portfolio={portfolio}>
-            {isAuthenticated && isSiteOwner && (
+            {isAuthenticated && userRole === "siteOwner" && (
               <Row>
                 <Col>
                   <ButtonGroup>
