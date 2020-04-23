@@ -28,16 +28,13 @@ const About = ({ user, isAuthenticated, userRole }) => {
                 I have a Bachelor degree in Electronic Engineering and several
                 years of experience working on a wide range of technologies.
                 After several years working at different companies as an
-                electronic engineer I have moved my career into the fullstack
-                web development in React and NextJS.
+                electronic engineer I wanted to move my career into the fullstack
+                web development especially in React and NextJS.
               </p>
               <p>
-                Throughout my career, I have acquired advanced technical
-                knowledge and the ability to explain programming topics clearly
-                and in detail to a broad audience. I invite you to take my
-                course, where I have put a lot of effort to explain web and
-                software engineering concepts in a detailed, hands-on and
-                understandable way.
+                Throughout my learning career as a web developer, I have acquired lots of technical
+                knowledge and the ability. Having developed a taste for web development about one year, 
+                I have made a lot of progress in this field in a short time with the help of my previous job experiences.
               </p>
             </div>
           </Col>
