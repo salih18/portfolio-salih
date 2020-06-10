@@ -14,7 +14,7 @@ const Cv = ({ user, isAuthenticated, userRole }) => {
           <Col md={{ size: 8, offset: 2 }}>
             <div className="cv-title text-center mt-5">
               <a
-                download="jerga_cv.pdf"
+                download="salih_cv.pdf"
                 className="btn btn-lg btn-primary mb-2"
                 href="/static/resume.pdf"
               >
