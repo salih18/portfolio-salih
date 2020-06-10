@@ -25,7 +25,7 @@ const Footer = () => {
             </li>
           </ul>
           <p className="copyright text-muted text-center">
-            Copyright &copy; Salih SERT 2020
+            Copyright &copy; Salih SERT 2020 
           </p>
         </footer>
       </Col>
