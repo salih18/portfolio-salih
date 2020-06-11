@@ -45,13 +45,19 @@ async function handlePostRequest(req, res) {
       company,
       location,
       position,
+      link,
       description,
       startDate,
       endDate,
     } = req.body;
 
     if (
-      (!title || !company || !location || !position, !description, !startDate)
+      !title ||
+      !company ||
+      !location ||
+      !position ||
+      !description ||
+      !startDate
     ) {
       return res.status(422).send("Portfolio missing one or more fields");
     }
@@ -61,6 +67,7 @@ async function handlePostRequest(req, res) {
       title,
       company,
       location,
+      link,
       position,
       description,
       startDate,

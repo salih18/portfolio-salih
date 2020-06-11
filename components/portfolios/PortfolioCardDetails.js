@@ -4,6 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import moment from "moment";
 
 const PortfolioCardDetails = ({ toggle, className, isOpen, portfolio }) => {
+  const handleClick = () => {};
   return (
     <div>
       <Modal isOpen={isOpen} toggle={toggle}>
@@ -40,6 +41,10 @@ const PortfolioCardDetails = ({ toggle, className, isOpen, portfolio }) => {
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>
+
+          <a target="_blank" href={portfolio.link}>
+            Preview
+          </a>
         </ModalFooter>
       </Modal>
     </div>

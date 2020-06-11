@@ -52,6 +52,7 @@ const PortfolioCreateForm = ({ initialValues, error, onSubmit, editing }) => (
             label="Position"
             component={PortInput}
           />
+          <Field type="text" name="link" label="Link" component={PortInput} />
           <Field
             type="textarea"
             name="description"

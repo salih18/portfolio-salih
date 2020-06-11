@@ -11,6 +11,7 @@ const setStringType = (maxLength) => ({
 const portfolioSchema = new mongoose.Schema({
   userId: setStringType(512),
   title: setStringType(256),
+  link: setStringType(1000),
   company: setStringType(256),
   location: setStringType(128),
   position: setStringType(256),
